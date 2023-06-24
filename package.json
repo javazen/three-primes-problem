@@ -1,7 +1,7 @@
 {
-  "name": "primeProblem_v1",
+  "name": "three-primes-problem",
   "version": "0.1.0",
-  "description": "",
+  "description": "very brute force solution",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint ./src/*.js; true",
