@@ -1,11 +1,6 @@
-.positionABSOLUTE {
-	position: absolute;
-}
-
 header {
 	text-align: center;
 }
-
 
 .primesAndSum {
 	text-align: center;
@@ -13,9 +8,7 @@ header {
 	flex-direction: column;
 }
 
-
 label {
-	/*display: inline-block;*/
 	width: 100%;
 	text-align: center;
   }
