@@ -22,11 +22,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function* longRunningCalculation() {
   let sum, lowestSum = 1000000000;
   let originalTime = Date.now();
-  const badEndingDigits = [2, 4, 5, 6, 8];
   const badEndingDigitsStr = ['2', '4', '5', '6', '8'];
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sun:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:''};
-  for (let i=123456789; i<=987654321; i++) {
+  for (let i=123456791; i<=987654319; i++) {
     if (i % 10000000 === 0) {
       obj.i = i;
       asterisks += '*';
@@ -44,13 +43,12 @@ function* longRunningCalculation() {
     // solutions do not include 0
     if (str.includes('0'))
       continue;
+    // when a>b, abc > bac, so skip the larger one
+    if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
+      continue;
 
     let aDigitArray = Array.from(str, Number);
 
-    // when a>b, abc > bac, so skip the larger one
-    if ( (aDigitArray[0] > aDigitArray[1]) || (aDigitArray[3] > aDigitArray[4]) || (aDigitArray[6] > aDigitArray[7]) )
-      continue;
-    
     // make sure we use each digit once
     let aDigitSet = new Set(aDigitArray);
     if (aDigitSet.size != aDigitArray.length)
