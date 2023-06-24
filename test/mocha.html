@@ -1,0 +1,22 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <link rel="icon" href="data:;base64,=">
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+</head>
+<body>
+<div id="mocha"></div>
+
+<script class="mocha-init">
+    mocha.setup('tdd')
+    mocha.checkLeaks();
+</script>
+<script type="module" src="spec/test_yourSpecificCode.js"></script>
+<script type="module" class="mocha-exec">
+    mocha.run();
+</script>
+</body>
+</html>
