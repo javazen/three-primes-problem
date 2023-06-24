@@ -97,11 +97,10 @@ function* longRunningCalculation() {
   if (TRACE) console.log ('total time= ' + (Date.now()-originalTime));
   return obj;
 
-  // Only valid for primes up to ?
+  // customized for this project, where n is between 100 and 999 and 
+  // we have already removed n which ends in 2 and 5
   function isPrime(n) {
     if (n % 3 === 0)
-      return false;
-    if (n % 5 === 0)
       return false;
     if (n % 7 === 0)
       return false;
