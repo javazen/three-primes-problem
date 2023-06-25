@@ -5,10 +5,12 @@ if (!window.console) { window.console = { log: function(){} }; }
 
 if (TRACE) console.log('index.js loaded');
 
-let p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField, asterisks='';
+let stopBtn, p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField, asterisks='', userStop = false;
 
 document.addEventListener("DOMContentLoaded", function(event) {
   if (TRACE) console.log('DOMContentLoaded');
+  stopBtn = document.getElementById("stop");
+  stopBtn.addEventListener('click', handleStop);
   p1Field = document.getElementById("prime1");
   p2Field = document.getElementById("prime2");
   p3Field = document.getElementById("prime3");
@@ -19,6 +21,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   startSearch();
 });
 
+// when user clicks stop...
+function handleStop() {
+  userStop = true;
+}
+
 function* longRunningCalculation() {
   let sum, lowestSum = 1000000000;
   let originalTime = Date.now();
@@ -26,8 +33,9 @@ function* longRunningCalculation() {
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sun:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:''};
   for (let i=123456791; i<=987654319; i++) {
-    if (i % 10000000 === 0) {
+    if (i % 10000000 === 0 || userStop) {
       obj.i = i;
+      obj.userStop = userStop;
       asterisks += '*';
       yield obj; // Yield result to update UI after every 10 million iterations
     }
@@ -136,7 +144,7 @@ function startSearch() {
   
   function performCalculation() {
     const { value, done } = iterator.next();
-    if (done) {
+    if (done || value.userStop) {
       updateUI(value);
     } else {
       updateUI(value);
