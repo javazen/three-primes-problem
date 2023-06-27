@@ -8,10 +8,11 @@ if (TRACE) console.log('three-primes-search.js loaded');
 
 export function* bruteForceSearch() {
   let sum, lowestSum = 1000000000;
+  let listOfPrimes = findAllSuitableThreeDigitPrimes();
   let originalTime = Date.now();
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sum:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
-  for (let i=127463589; i<=983547521; i++) {
+  for (let i=127463589; i<=983647521; i++) {
     let str = '' + i;
     // fail fast in many cases
     // last digit of each 3-digit number can't end with 24568 (would be a composite)
@@ -21,8 +22,8 @@ export function* bruteForceSearch() {
       continue;
     if ('2' === str[8] || '4' === str[8] || '5' === str[8] || '6' === str[8] || '8' === str[8])
       continue;
-    
-    // Give the UI a chance to update
+
+      // Give the UI a chance to update
     if (i % 20000000 === 0) {
       obj.i = i;
       obj.asterisks += '*';
@@ -32,6 +33,7 @@ export function* bruteForceSearch() {
     // solutions cannot include 0
     if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
       continue;
+    
     // when a>b, abc > bac, the larger one can never be an optimal solution, skip it
     if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
       continue;
@@ -48,7 +50,7 @@ export function* bruteForceSearch() {
     let n1 = aDigitArray[2] + 10*aDigitArray[1] + 100*aDigitArray[0];
     let n2 = aDigitArray[5] + 10*aDigitArray[4] + 100*aDigitArray[3];
     let n3 = aDigitArray[8] + 10*aDigitArray[7] + 100*aDigitArray[6];
-    if (!isPrime(n1) || !isPrime(n2) || !isPrime(n3))
+    if (!listOfPrimes.includes(n1) || !listOfPrimes.includes(n2) || !listOfPrimes.includes(n3))
       continue;
     
     // we have found a solution!
@@ -85,6 +87,57 @@ export function* bruteForceSearch() {
   if (TRACE) console.log ('total time= ' + (Date.now()-originalTime));
   return obj;
 
+  function isDuplicate(solutionArray, goodObj) {
+    for (let i=0; i<solutionArray.length; i++) {
+      const aSolution = solutionArray[i];
+      if (aSolution.p1 === goodObj.p1 && aSolution.p2 === goodObj.p2 && aSolution.p3 === goodObj.p3)
+        return true;
+    }
+    return false;
+  }
+
+}
+
+// sieve for primes but also remove any prime with a 0 or repeating digit in it, 
+// or of pattern abc where a > b
+export function findAllSuitableThreeDigitPrimes() {
+  let primesArray = [];
+  for (let i=101; i<=986; i++) {
+    let str = '' + i;
+    // fail fast in many cases
+    // last digit of each 3-digit number can't end with 24568 (would be a composite)
+    if ('2' === str[2] || '4' === str[2] || '5' === str[2] || '6' === str[2] || '8' === str[2])
+      continue;
+    if ('2' === str[5] || '4' === str[5] || '5' === str[5] || '6' === str[5] || '8' === str[5])
+      continue;
+    if ('2' === str[8] || '4' === str[8] || '5' === str[8] || '6' === str[8] || '8' === str[8])
+      continue;
+
+    // solutions cannot include 0
+    if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
+      continue;
+    // when a>b, abc > bac, the larger one can never be an optimal solution, skip it
+    if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
+      continue;
+
+    let aDigitArray = Array.from(str, Number);
+
+    // make sure we use each digit once
+    let aDigitSet = new Set(aDigitArray);
+    if (aDigitSet.size != aDigitArray.length)
+      continue;
+    
+    // create the 3-digit numbers and check that they are prime
+    // let n1 = aDigitArray[2] + 10*aDigitArray[1] + 100*aDigitArray[0];
+    if (!isPrime(i))
+      continue;
+    
+    // we have found a solution!
+    primesArray.push(i);
+  }
+
+  return primesArray;
+
   // customized for this project, where n is between 100 and 999 and 
   // we have already removed n which ends in 2 and 5
   function isPrime(n) {
@@ -110,14 +163,5 @@ export function* bruteForceSearch() {
     return true;
   }
 
-  function isDuplicate(solutionArray, goodObj) {
-    for (let i=0; i<solutionArray.length; i++) {
-      const aSolution = solutionArray[i];
-      if (aSolution.p1 === goodObj.p1 && aSolution.p2 === goodObj.p2 && aSolution.p3 === goodObj.p3)
-        return true;
-    }
-    return false;
-  }
 
 }
-
