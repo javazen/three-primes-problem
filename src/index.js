@@ -1,4 +1,4 @@
-import {longRunningCalculation} from './three-primes-search.js';
+import {bruteForceSearch} from './three-primes-search.js';
 
 const TRACE = true;
 
@@ -30,7 +30,7 @@ function handleStop() {
 
 
 function startSearch() {
-  const iterator = longRunningCalculation();
+  const iterator = bruteForceSearch();
   
   function performCalculation() {
     const { value, done } = iterator.next();

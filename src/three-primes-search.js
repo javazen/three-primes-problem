@@ -1,17 +1,18 @@
 const TRACE = true;
+const DEBUG = false;
 
 // In the unlikely event this is run in a REALLY old browser that does not support console.log
 if (!window.console) { window.console = { log: function(){} }; }
 
 if (TRACE) console.log('three-primes-search.js loaded');
 
-export function* longRunningCalculation() {
+export function* bruteForceSearch() {
   let sum, lowestSum = 1000000000;
   let originalTime = Date.now();
   const badEndingDigitsStr = ['2', '4', '5', '6', '8'];
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sun:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
-  for (let i=123456791; i<=987654319; i++) {
+  for (let i=127463589; i<=983547521; i++) {
     if (i % 10000000 === 0) {
       obj.i = i;
       obj.asterisks += '*';
@@ -37,7 +38,7 @@ export function* longRunningCalculation() {
 
     // make sure we use each digit once
     let aDigitSet = new Set(aDigitArray);
-    if (aDigitSet.size != aDigitArray.length)
+    if (aDigitSet.size != 9)
       continue;
     
     // create the 3-digit numbers and check that they are prime
@@ -72,7 +73,7 @@ export function* longRunningCalculation() {
     // save the solution to eliminate duplicates
     solutionArray.push(goodObj);
 
-    if (TRACE) console.log('p1= ' + n1 + ' p2= ' + n2 + ' p3= ' + n3 + ' --> sum= ' + sum);
+    if (DEBUG) console.log('p1= ' + n1 + ' p2= ' + n2 + ' p3= ' + n3 + ' --> sum= ' + sum);
 
     // Also yield result to update UI when a solution is found
     obj.i = i;
