@@ -10,13 +10,8 @@ export function* bruteForceSearch() {
   let sum, lowestSum = 1000000000;
   let originalTime = Date.now();
   let solutionArray = [];
-  let obj = {p1:'', p2:'', p3:'', sun:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
+  let obj = {p1:'', p2:'', p3:'', sum:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
   for (let i=127463589; i<=983547521; i++) {
-    if (i % 20000000 === 0) {
-      obj.i = i;
-      obj.asterisks += '*';
-      yield obj; // Yield result to update UI after every 10 million iterations
-    }
     let str = '' + i;
     // fail fast in many cases
     // last digit of each 3-digit number can't end with 24568 (would be a composite)
@@ -26,10 +21,18 @@ export function* bruteForceSearch() {
       continue;
     if ('2' === str[8] || '4' === str[8] || '5' === str[8] || '6' === str[8] || '8' === str[8])
       continue;
+    
+    // Give the UI a chance to update
+    if (i % 20000000 === 0) {
+      obj.i = i;
+      obj.asterisks += '*';
+      yield obj; // Yield result to update UI after every 10 million iterations
+    }
+
     // solutions cannot include 0
     if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
       continue;
-    // when a>b, abc > bac, so skip the larger one
+    // when a>b, abc > bac, the larger one can never be an optimal solution, skip it
     if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
       continue;
 
@@ -40,6 +43,7 @@ export function* bruteForceSearch() {
     if (aDigitSet.size != 9)
       continue;
     
+
     // create the 3-digit numbers and check that they are prime
     let n1 = aDigitArray[2] + 10*aDigitArray[1] + 100*aDigitArray[0];
     let n2 = aDigitArray[5] + 10*aDigitArray[4] + 100*aDigitArray[3];
