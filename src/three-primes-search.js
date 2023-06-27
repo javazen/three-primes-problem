@@ -9,26 +9,25 @@ if (TRACE) console.log('three-primes-search.js loaded');
 export function* bruteForceSearch() {
   let sum, lowestSum = 1000000000;
   let originalTime = Date.now();
-  const badEndingDigitsStr = ['2', '4', '5', '6', '8'];
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sun:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
   for (let i=127463589; i<=983547521; i++) {
-    if (i % 10000000 === 0) {
+    if (i % 20000000 === 0) {
       obj.i = i;
       obj.asterisks += '*';
       yield obj; // Yield result to update UI after every 10 million iterations
     }
-    let str = i.toString();
+    let str = '' + i;
     // fail fast in many cases
     // last digit of each 3-digit number can't end with 24568 (would be a composite)
-    if (badEndingDigitsStr.includes(str[2]))
+    if ('2' === str[2] || '4' === str[2] || '5' === str[2] || '6' === str[2] || '8' === str[2])
       continue;
-    if (badEndingDigitsStr.includes(str[5]))
+    if ('2' === str[5] || '4' === str[5] || '5' === str[5] || '6' === str[5] || '8' === str[5])
       continue;
-    if (badEndingDigitsStr.includes(str[8]))
+    if ('2' === str[8] || '4' === str[8] || '5' === str[8] || '6' === str[8] || '8' === str[8])
       continue;
-    // solutions do not include 0
-    if (str.includes('0'))
+    // solutions cannot include 0
+    if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
       continue;
     // when a>b, abc > bac, so skip the larger one
     if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
