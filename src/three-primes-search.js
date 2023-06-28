@@ -7,45 +7,89 @@ if (!window.console) { window.console = { log: function(){} }; }
 if (TRACE) console.log('three-primes-search.js loaded');
 
 export function* bruteForceSearch() {
-  let sum, lowestSum = 1000000000;
-  let listOfPrimes = findAllSuitableThreeDigitPrimes();
+  let sum, lowestSum = 1000000000, prevStopForUI = 0;
   let originalTime = Date.now();
+  let listOfPrimes = findAllSuitableThreeDigitPrimes();
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sum:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
-  for (let i=127463589; i<=983647521; i++) {
-    let str = '' + i;
-    // fail fast in many cases
-    // last digit of each 3-digit number can't end with 24568 (would be a composite)
-    if ('2' === str[2] || '4' === str[2] || '5' === str[2] || '6' === str[2] || '8' === str[2])
-      continue;
-    if ('2' === str[5] || '4' === str[5] || '5' === str[5] || '6' === str[5] || '8' === str[5])
-      continue;
-    if ('2' === str[8] || '4' === str[8] || '5' === str[8] || '6' === str[8] || '8' === str[8])
-      continue;
-
-      // Give the UI a chance to update
-    if (i % 20000000 === 0) {
-      obj.i = i;
-      obj.asterisks += '*';
-      yield obj; // Yield result to update UI after every 10 million iterations
-    }
-
-    // solutions cannot include 0
-    if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
+  for (let i=123456789; i<=987654321; i++) {
+    let temp = i;
+  
+    let d8 = temp % 10;
+    if (0 === d8 || 2 === d8 || 4 === d8 || 5 === d8 || 6 === d8 || 8 === d8)
       continue;
     
-    let aDigitArray = Array.from(str, Number);
+    temp = (temp - d8) / 10;
+    let d7 = temp % 10;
+    if (0 === d7)
+      continue;
+    
+    // Give the UI a chance to update
+    if (i - prevStopForUI > 20000000) {
+      obj.i = i;
+      obj.asterisks += '*';
+      prevStopForUI = i;
+      yield obj; // Yield result to update UI after every 10 million iterations
+    }
+    
+    temp = (temp - d7) / 10;
+    let d6 = temp % 10;
+    if (0 === d6)
+      continue;
+    
+    temp = (temp - d6) / 10;
+    let d5 = temp % 10;
+    if (0 === d5 || 2 === d5 || 4 === d5 || 5 === d5 || 6 === d5 || 8 === d5)
+      continue;
+    
+    temp = (temp - d5) / 10;
+    let d4 = temp % 10;
+    if (0 === d4)
+      continue;
+    
+    temp = (temp - d4) / 10;
+    let d3 = temp % 10;
+    if (0 === d3)
+      continue;
+    
+    temp = (temp - d3) / 10;
+    let d2 = temp % 10;
+    if (0 === d2 || 2 === d2 || 4 === d2 || 5 === d2 || 6 === d2 || 8 === d2)
+      continue;
+    
+    temp = (temp - d2) / 10;
+    let d1 = temp % 10;
+    if (0 === d1)
+      continue;
+    
+    temp = (temp - d1) / 10;
+    let d0 = temp % 10;
+
+    // let aDigitArray = Array.from(str, Number);
+    let aDigitArray = [d0, d1, d2, d3, d4, d5, d6, d7, d8];
 
     // make sure we use each digit once
-    let aDigitSet = new Set(aDigitArray);
+    let aDigitSet = new Set();
+    aDigitSet.add(d0);
+    aDigitSet.add(d1);
+    aDigitSet.add(d2);
+    if (aDigitSet.size != 3)
+      continue;
+    aDigitSet.add(d3);
+    aDigitSet.add(d4);
+    aDigitSet.add(d5);
+    if (aDigitSet.size != 6)
+      continue;
+    aDigitSet.add(d6);
+    aDigitSet.add(d7);
+    aDigitSet.add(d8);
     if (aDigitSet.size != 9)
       continue;
     
-
     // create the 3-digit numbers and check that they are prime
-    let n1 = aDigitArray[2] + 10*aDigitArray[1] + 100*aDigitArray[0];
-    let n2 = aDigitArray[5] + 10*aDigitArray[4] + 100*aDigitArray[3];
-    let n3 = aDigitArray[8] + 10*aDigitArray[7] + 100*aDigitArray[6];
+    let n1 = d2 + 10*d1 + 100*d0;
+    let n2 = d5 + 10*d4 + 100*d3;
+    let n3 = d8 + 10*d7 + 100*d6;
     if (!listOfPrimes.includes(n1) || !listOfPrimes.includes(n2) || !listOfPrimes.includes(n3))
       continue;
     
@@ -96,8 +140,8 @@ export function* bruteForceSearch() {
 
 export function smartSearch() {
   let lowestSum = 1000000000;
-  let listOfPrimes = findAllSuitableThreeDigitPrimes();
   let originalTime = Date.now();
+  let listOfPrimes = findAllSuitableThreeDigitPrimes();
   let solutionArray = [];
   let obj = {p1:'', p2:'', p3:'', sum:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
 
@@ -205,6 +249,5 @@ export function findAllSuitableThreeDigitPrimes() {
     
     return true;
   }
-
 
 }
