@@ -1,4 +1,4 @@
-import {bruteForceSearch} from './three-primes-search.js';
+import {bruteForceSearch, smartSearch} from './three-primes-search.js';
 
 const TRACE = true;
 
@@ -7,7 +7,7 @@ if (!window.console) { window.console = { log: function(){} }; }
 
 if (TRACE) console.log('index.js loaded');
 
-let stopBtn, p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField, userStop = false;
+let bruteForceBtn, smartBtn, stopBtn, p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField, userStop = false;
 
 document.addEventListener("DOMContentLoaded", function(event) {
   if (TRACE) console.log('DOMContentLoaded');
@@ -19,17 +19,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
   sumField = document.getElementById("lowestSum");
   latestSolutionField = document.getElementById("latestSolution");
   progressField = document.getElementById("progress");
+  bruteForceBtn = document.getElementById("bruteForce");
+  bruteForceBtn.addEventListener('click', handleBruteForce);
+  smartBtn = document.getElementById("smart");
+  smartBtn.addEventListener('click', handleSmart);
   
-  startSearch();
+ // startSearch();
 });
 
-// when user clicks stop...
-function handleStop() {
-  userStop = true;
-}
-
-
-function startSearch() {
+export function handleBruteForce() {
   const iterator = bruteForceSearch();
   
   function performCalculation() {
@@ -44,6 +42,14 @@ function startSearch() {
   
   performCalculation();
 }
+export function handleSmart() {
+  let solutionObj = smartSearch();
+  updateUI(solutionObj);
+}
+function handleStop() {
+  userStop = true;
+}
+
 
 function updateUI(value) {
   p1Field.value = value.lowp1;

@@ -98,6 +98,56 @@ export function* bruteForceSearch() {
 
 }
 
+export function smartSearch() {
+  let lowestSum = 1000000000;
+  let listOfPrimes = findAllSuitableThreeDigitPrimes();
+  let originalTime = Date.now();
+  let solutionArray = [];
+  let obj = {p1:'', p2:'', p3:'', sum:'', lowestSum:'', lowp1:'', lowp2:'', lowp3:'', asterisks:''};
+
+  for (let i=0; i<listOfPrimes.length; i++) {
+    let n1 = listOfPrimes[i];
+    let s1 = n1.toString();
+    for (let j=i+1; j<listOfPrimes.length; j++) {
+      // make sure there are no duplicate digits
+      let n2 = listOfPrimes[j];
+      let s2 = n2.toString();
+      let s12 = s1 + s2;
+      let arr12 = Array.from(s12, String);
+      let set12 = new Set(arr12);
+      if (set12.size != arr12.length) 
+        continue;
+      
+      for (let k=j+1; k<listOfPrimes.length; k++) {
+        let n3 = listOfPrimes[k];
+        let s3 = n3.toString();
+        let s123 = s1 + s2 + s3;
+        let arr123 = Array.from(s123, String);
+        let set123 = new Set(arr123);
+        if (set123.size === arr123.length) {
+          solutionArray.push([n1, n2, n3]);
+        }
+      }
+    }
+  }
+
+  // See which of the solutions is best:
+  for (let i=0; i<solutionArray.length; i++) {
+    let aSolution = solutionArray[i];
+    let sum = aSolution[0] + aSolution[1] + aSolution[2];
+    if (sum < lowestSum) {
+      obj.lowp1 = aSolution[0];
+      obj.lowp2 = aSolution[1];
+      obj.lowp3 = aSolution[2];
+      obj.lowestSum = sum;
+      lowestSum = sum;
+    }
+  }
+
+  if (TRACE) console.log ('total time= ' + (Date.now()-originalTime));
+  return obj;
+}
+
 // sieve for primes but also remove any prime with a 0 or repeating digit in it, 
 // or of pattern abc where a > b
 export function findAllSuitableThreeDigitPrimes() {
