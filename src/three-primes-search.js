@@ -34,10 +34,6 @@ export function* bruteForceSearch() {
     if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
       continue;
     
-    // when a>b, abc > bac, the larger one can never be an optimal solution, skip it
-    if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
-      continue;
-
     let aDigitArray = Array.from(str, Number);
 
     // make sure we use each digit once
@@ -165,9 +161,6 @@ export function findAllSuitableThreeDigitPrimes() {
 
     // solutions cannot include 0
     if ('0' === str[1] || '0' === str[2] || '0' === str[3] || '0' === str[4] || '0' === str[5] || '0' === str[6] || '0' === str[7] || '0' === str[8])
-      continue;
-    // when a>b, abc > bac, the larger one can never be an optimal solution, skip it
-    if ( (str[0] > str[1]) || (str[3] > str[4]) || (str[6] > str[7]) )
       continue;
 
     let aDigitArray = Array.from(str, Number);
