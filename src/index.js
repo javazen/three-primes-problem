@@ -7,19 +7,24 @@ if (!window.console) { window.console = { log: function(){} }; }
 
 if (TRACE) console.log('index.js loaded');
 
-let bruteForceBtn, smartBtn, stopBtn, p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField, userStop = false;
+let bruteForceBtn, smartBtn, goBtn, stopBtn, p1Field, p2Field, p3Field, sumField, latestSolutionField, progressField;
+let mode = 'smart';
+let userStop = false;
 
 document.addEventListener("DOMContentLoaded", function(event) {
   if (TRACE) console.log('DOMContentLoaded');
   stopBtn = document.getElementById("stop");
   stopBtn.addEventListener('click', handleStop);
+  goBtn = document.getElementById("go");
+  goBtn.addEventListener('click', handleGo);
   p1Field = document.getElementById("prime1");
   p2Field = document.getElementById("prime2");
   p3Field = document.getElementById("prime3");
   sumField = document.getElementById("lowestSum");
   latestSolutionField = document.getElementById("latestSolution");
   progressField = document.getElementById("progress");
-  bruteForceBtn = document.getElementById("bruteForce");
+
+  bruteForceBtn = document.getElementById("brute");
   bruteForceBtn.addEventListener('click', handleBruteForce);
   smartBtn = document.getElementById("smart");
   smartBtn.addEventListener('click', handleSmart);
@@ -27,7 +32,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
  // startSearch();
 });
 
-export function handleBruteForce() {
+function handleBruteForce() {
+  mode = 'brute';
+}
+export function handleSmart() {
+  mode = 'smart';
+}
+
+function handleStop() {
+  userStop = true;
+}
+function handleGo() {
+  if (mode === 'brute') {
+    goBruteForce();
+  } else {
+    let solutionObj = smartSearch();
+    updateUI(solutionObj);
+  }
+}
+
+
+function updateUI(value) {
+  p1Field.value = value.lowp1;
+  p2Field.value = value.lowp2;
+  p3Field.value = value.lowp3;
+  sumField.value = value.lowestSum;
+  // latestSolutionField.value = `latest solution:   p1=${value.p1}    p2=${value.p2}    p3=${value.p3}   sum:${value.sum}`;
+  progressField.innerHTML = value.asterisks;
+  // const total = 987654321 - 123456789;
+  // const done = value.i - 123456789;
+  // progressField.innerHTML = `${done} examined out of ${total}`;
+}
+
+function goBruteForce() {
   const iterator = bruteForceSearch();
   
   function performCalculation() {
@@ -41,24 +78,4 @@ export function handleBruteForce() {
   }
   
   performCalculation();
-}
-export function handleSmart() {
-  let solutionObj = smartSearch();
-  updateUI(solutionObj);
-}
-function handleStop() {
-  userStop = true;
-}
-
-
-function updateUI(value) {
-  p1Field.value = value.lowp1;
-  p2Field.value = value.lowp2;
-  p3Field.value = value.lowp3;
-  sumField.value = value.lowestSum;
-  latestSolutionField.value = `latest solution:   p1=${value.p1}    p2=${value.p2}    p3=${value.p3}   sum:${value.sum}`;
-  progressField.innerHTML = value.asterisks;
-  // const total = 987654321 - 123456789;
-  // const done = value.i - 123456789;
-  // progressField.innerHTML = `${done} examined out of ${total}`;
 }

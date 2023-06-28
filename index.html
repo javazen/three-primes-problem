@@ -26,13 +26,24 @@
       <br/>
       <br/>
     </div>
-    <button id="bruteForce">Brute Force</button>
-    <button id="smart">Smart</button>
+    <div class="modeBtns">
+      <span>
+        <input id="smart" type='radio' name="mode" value="smart" checked>
+        <label for="smart">Smart Search</label>
+      </span>
+      <span>
+        <input id="brute" type='radio' name="mode" value="brute">
+        <label for="brute">Brute Force Search (verrrry slow)</label>
+      </span>
+      <span>
+        <button id="go" title="click to start the search">Go!</button>
+        <button id="stop" title="click to stop the search">Stop!</button>
+      </span>
+      </div>
 
     <footer>
-      <input id="latestSolution" type="text" />
+      <!--input id="latestSolution" type="text" /-->
       <h4 id="progress"></h4>
-      <button id="stop" title="click to stop the search">stop</button>
-      </footer>
+    </footer>
   </body>
 </html>

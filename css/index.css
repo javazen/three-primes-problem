@@ -2,18 +2,23 @@ header {
 	text-align: center;
 }
 
-.primesAndSum {
+.primesAndSum, .modeBtns {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 }
 
-label {
+#latestSolution {
 	width: 100%;
 	text-align: center;
 }
 
-#latestSolution {
-	width: 100%;
-	text-align: center;
+input[type="radio"] + label {
+	cursor: pointer;
+	width: 300px;
+}
+
+button {
+	padding: 10px;
+	margin: 20px;
 }
